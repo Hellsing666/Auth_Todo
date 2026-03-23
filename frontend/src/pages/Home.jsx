@@ -16,11 +16,11 @@ function Home({ user, setUser }) {
   if (!user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-2xl p-12 max-w-md w-full text-center">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-12 max-w-md w-full text-center">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
             🌊 Welcome to TaskFlow
           </h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-gray-600 mb-8 text-sm sm:text-base">
             Please login or register to manage your tasks effectively
           </p>
           <div className="space-y-3">

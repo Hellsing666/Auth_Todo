@@ -80,29 +80,31 @@ const Todos = () => {
 
         {/* Add Todo Form */}
         <form onSubmit={addTodo} className="mb-6">
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               type="text"
               value={newTodo}
               onChange={(e) => setNewTodo(e.target.value)}
               placeholder="Add a new task..."
-              className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 transition-colors"
+              className="w-full sm:flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 transition-colors"
             />
-            <select
-              value={newPriority}
-              onChange={(e) => setNewPriority(e.target.value)}
-              className="px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 transition-colors bg-white font-medium text-gray-700"
-            >
-              <option value="low">Low Priority</option>
-              <option value="medium">Medium Priority</option>
-              <option value="high">High Priority</option>
-            </select>
-            <button
-              type="submit"
-              className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all duration-200 shadow-md hover:shadow-lg"
-            >
-              Add
-            </button>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <select
+                value={newPriority}
+                onChange={(e) => setNewPriority(e.target.value)}
+                className="flex-1 sm:w-40 px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 transition-colors bg-white font-medium text-gray-700"
+              >
+                <option value="low">Low Priority</option>
+                <option value="medium">Medium Priority</option>
+                <option value="high">High Priority</option>
+              </select>
+              <button
+                type="submit"
+                className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all duration-200 shadow-md hover:shadow-lg"
+              >
+                Add
+              </button>
+            </div>
           </div>
         </form>
 
@@ -114,94 +116,112 @@ const Todos = () => {
             todos.map((todo) => (
               <div
                 key={todo.id}
-                className={`flex items-center gap-3 p-4 rounded-lg border-2 transition-all duration-200 ${
+                className={`flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-lg border-2 transition-all duration-200 ${
                   todo.completed
                     ? "bg-gray-50 border-gray-200"
                     : "bg-white border-gray-200 hover:border-indigo-300 hover:shadow-md"
                 }`}
               >
-                {/* Checkbox */}
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  onChange={() => updateTodo(todo.id, todo.description, !todo.completed, todo.priority || "medium")}
-                  className="w-5 h-5 text-indigo-600 rounded focus:ring-2 focus:ring-indigo-500 cursor-pointer"
-                />
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  {/* Checkbox */}
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => updateTodo(todo.id, todo.description, !todo.completed, todo.priority || "medium")}
+                    className="w-5 h-5 text-indigo-600 rounded focus:ring-2 focus:ring-indigo-500 cursor-pointer flex-shrink-0"
+                  />
 
-                {/* Todo Text */}
-                {editingId === todo.id ? (
-                  <div className="flex-1 flex gap-2">
-                    <input
-                      type="text"
-                      value={editText}
-                      onChange={(e) => setEditText(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          if (editText.trim()) {
-                            updateTodo(todo.id, editText, todo.completed, editPriority);
-                          }
-                          setEditingId(null);
-                        }
-                      }}
-                      autoFocus
-                      className="flex-1 px-3 py-1.5 border-2 border-indigo-300 rounded-lg focus:outline-none focus:border-indigo-500"
-                    />
-                    <select
-                      value={editPriority}
-                      onChange={(e) => setEditPriority(e.target.value)}
-                      className="px-3 py-1.5 border-2 border-indigo-300 rounded-lg focus:outline-none focus:border-indigo-500 bg-white"
-                    >
-                      <option value="low">Low</option>
-                      <option value="medium">Medium</option>
-                      <option value="high">High</option>
-                    </select>
-                    <button
-                      onClick={() => {
-                        if (editText.trim()) {
-                          updateTodo(todo.id, editText, todo.completed, editPriority);
-                        }
-                        setEditingId(null);
-                      }}
-                      className="px-3 py-1.5 bg-green-500 text-white text-sm font-medium rounded-lg hover:bg-green-600 transition-colors"
-                    >
-                      Save
-                    </button>
+                  {/* Todo Text / Editing */}
+                  <div className="flex-1 min-w-0">
+                    {editingId === todo.id ? (
+                      <div className="flex flex-col md:flex-row gap-2">
+                        <input
+                          type="text"
+                          value={editText}
+                          onChange={(e) => setEditText(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              if (editText.trim()) {
+                                updateTodo(todo.id, editText, todo.completed, editPriority);
+                              }
+                              setEditingId(null);
+                            }
+                          }}
+                          autoFocus
+                          className="flex-1 px-3 py-1.5 border-2 border-indigo-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                        />
+                        <div className="flex gap-2">
+                          <select
+                            value={editPriority}
+                            onChange={(e) => setEditPriority(e.target.value)}
+                            className="flex-1 md:w-32 px-3 py-1.5 border-2 border-indigo-300 rounded-lg focus:outline-none focus:border-indigo-500 bg-white"
+                          >
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                          </select>
+                          <button
+                            onClick={() => {
+                              if (editText.trim()) {
+                                updateTodo(todo.id, editText, todo.completed, editPriority);
+                              }
+                              setEditingId(null);
+                            }}
+                            className="px-3 py-1.5 bg-green-500 text-white text-sm font-medium rounded-lg hover:bg-green-600 transition-colors"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className={`flex items-center justify-between ${
+                        todo.completed ? "line-through text-gray-400" : "text-gray-800"
+                      }`}>
+                        <span className="truncate pr-4">{todo.description}</span>
+                        <span className={`text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap block sm:hidden ${
+                          (todo.priority || 'medium') === 'high' ? 'bg-red-100 text-red-600' : 
+                          (todo.priority || 'medium') === 'low' ? 'bg-green-100 text-green-700' : 
+                          'bg-yellow-100 text-yellow-700'
+                        }`}>
+                          {todo.priority ? todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1) : 'Medium'}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div className={`flex-1 flex items-center justify-between ${
-                    todo.completed ? "line-through text-gray-400" : "text-gray-800"
-                  }`}>
-                    <span className="truncate pr-4">{todo.description}</span>
-                    <span className={`text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap ${
+                </div>
+
+                {/* Priority and Action Buttons */}
+                <div className="flex items-center justify-between sm:justify-end gap-3 sm:ml-auto">
+                  {editingId !== todo.id && (
+                    <span className={`hidden sm:block text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap ${
                       (todo.priority || 'medium') === 'high' ? 'bg-red-100 text-red-600' : 
                       (todo.priority || 'medium') === 'low' ? 'bg-green-100 text-green-700' : 
                       'bg-yellow-100 text-yellow-700'
                     }`}>
                       {todo.priority ? todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1) : 'Medium'}
                     </span>
-                  </div>
-                )}
-
-                {/* Action Buttons */}
-                <div className="flex gap-2">
-                  {editingId !== todo.id && (
-                    <button
-                      onClick={() => {
-                        setEditingId(todo.id);
-                        setEditText(todo.description);
-                        setEditPriority(todo.priority || "medium");
-                      }}
-                      className="px-3 py-1.5 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
-                    >
-                      Edit
-                    </button>
                   )}
-                  <button
-                    onClick={() => deleteTodo(todo.id)}
-                    className="px-3 py-1.5 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors"
-                  >
-                    Delete
-                  </button>
+                  
+                  <div className="flex gap-2 ml-auto">
+                    {editingId !== todo.id && (
+                      <button
+                        onClick={() => {
+                          setEditingId(todo.id);
+                          setEditText(todo.description);
+                          setEditPriority(todo.priority || "medium");
+                        }}
+                        className="px-3 py-1.5 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
+                      >
+                        Edit
+                      </button>
+                    )}
+                    <button
+                      onClick={() => deleteTodo(todo.id)}
+                      className="px-3 py-1.5 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             ))
