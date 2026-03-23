@@ -11,6 +11,7 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 
 axios.defaults.withCredentials = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || "";
 
 function App() {
   const [user, setUser] = useState(null);

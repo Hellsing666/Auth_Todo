@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-axios.defaults.withCredentials = true;
 
 const Todos = () => {
   const [todos, setTodos] = useState([]);
